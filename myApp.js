@@ -5,6 +5,7 @@ const helmet = require('helmet')
 module.exports = app
 const api = require('./server.js')
 app.use(express.static('public'))
+app.use(helmet.noSniff())
 app.use(helmet.xssFilter())
 app.use(helmet.frameguard({ action: 'deny' }))
 app.use(helmet.hidePoweredBy())
