@@ -5,6 +5,9 @@ const helmet = require('helmet')
 module.exports = app
 const api = require('./server.js')
 app.use(express.static('public'))
+let ninetyDaysInSeconds = 90 * 24 * 60 * 60
+let timeInSeconds = ninetyDaysInSeconds
+app.use(helmet.hsts({ maxAge: timeInSeconds, force: true }))
 app.use(helmet.ieNoOpen())
 app.use(helmet.noSniff())
 app.use(helmet.xssFilter())
