@@ -7,6 +7,14 @@ const api = require('./server.js')
 app.use(express.static('public'))
 let ninetyDaysInSeconds = 90 * 24 * 60 * 60
 let timeInSeconds = ninetyDaysInSeconds
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", 'trusted-cdn.com']
+    }
+  })
+)
 app.use(helmet.noCache())
 app.use(helmet.dnsPrefetchControl())
 app.use(helmet.hsts({ maxAge: timeInSeconds, force: true }))
