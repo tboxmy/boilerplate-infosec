@@ -8,20 +8,26 @@ app.use(express.static('public'))
 let ninetyDaysInSeconds = 90 * 24 * 60 * 60
 let timeInSeconds = ninetyDaysInSeconds
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'trusted-cdn.com']
-    }
+  helmet({
+    frameguard: {
+      // configure
+      action: 'deny'
+    },
+    contentSecurityPolicy: {
+      // enable and configure
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ['style.com']
+      }
+    },
+    dnsPrefetchControl: false // disable
   })
 )
 app.use(helmet.noCache())
-app.use(helmet.dnsPrefetchControl())
 app.use(helmet.hsts({ maxAge: timeInSeconds, force: true }))
 app.use(helmet.ieNoOpen())
 app.use(helmet.noSniff())
 app.use(helmet.xssFilter())
-app.use(helmet.frameguard({ action: 'deny' }))
 app.use(helmet.hidePoweredBy())
 app.disable('strict-transport-security')
 app.use('/_api', api)
